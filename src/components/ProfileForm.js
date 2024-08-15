@@ -5,12 +5,23 @@ const ProfileForm = () => {
     const [profileData, setProfileData] = useState({
         name: localStorage.getItem('name') || '',
         mobile: localStorage.getItem('mobile') || '',
+        occupation: localStorage.getItem('occupation') || '',
+        acresOfLand: localStorage.getItem('acresOfLand') || '',
+        crop: localStorage.getItem('crop') || '',
+        rationCardOrAadhar: localStorage.getItem('rationCardOrAadhar') || '',
+        revenueAmount: localStorage.getItem('revenueAmount') || '',
+        bankAccountName: localStorage.getItem('bankAccountName') || '',
+        bankId: localStorage.getItem('bankId') || '',
+        branch: localStorage.getItem('branch') || '',
+        offers: localStorage.getItem('offers') || '',
+        artisanDetails: localStorage.getItem('artisanDetails') || '',
+        productDescription: localStorage.getItem('productDescription') || '',
+        companyName: localStorage.getItem('companyName') || '',
+        othersDescription: localStorage.getItem('othersDescription') || '',
         address: '',
         state: '',
         city: '',
         pincode: '',
-        store: '',
-        occupation: '',
         purpose: ''
     });
 
@@ -18,28 +29,34 @@ const ProfileForm = () => {
     const navigate = useNavigate();
 
     const handleChange = (e) => {
-        setProfileData({
-            ...profileData,
-            [e.target.name]: e.target.value
-        });
+        const { name, value } = e.target;
+        setProfileData((prevState) => ({
+            ...prevState,
+            [name]: value
+        }));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (profileData.pincode.length !== 6) {
-            alert('Pincode must be 6 digits.');
-            return;
-        }
-
-        // Store profile data or send to backend
-        localStorage.setItem('profileData', JSON.stringify(profileData));
+        localStorage.setItem('userProfile', JSON.stringify(profileData));
         setSuccess(true);
 
-        // Redirect to Dashboard or any other page based on your need
+        // Redirect to Profile Page after registration
         setTimeout(() => {
-            navigate('/');
+            navigate('/form');
         }, 2000);
     };
+
+    const statesAndUTs = [
+        'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
+        'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand',
+        'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur',
+        'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab',
+        'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura',
+        'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Andaman and Nicobar Islands',
+        'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Lakshadweep',
+        'Delhi', 'Puducherry'
+    ];
 
     return (
         <div className="container">
@@ -50,26 +67,143 @@ const ProfileForm = () => {
                     type="text"
                     name="name"
                     value={profileData.name}
-                    onChange={handleChange}
                     placeholder="Name"
-                    required
                     readOnly
                 />
                 <input
                     type="number"
                     name="mobile"
                     value={profileData.mobile}
-                    onChange={handleChange}
                     placeholder="Mobile Number"
-                    required
                     readOnly
                 />
+                <select
+                    name="occupation"
+                    value={profileData.occupation}
+                    onChange={handleChange}
+                >
+                    <option value="Farmer">Farmer</option>
+                    <option value="Banker">Banker</option>
+                    <option value="Artisan">Artisan</option>
+                    <option value="Others">Others</option>
+                </select>
+
+                {profileData.occupation === 'Farmer' && (
+                    <>
+                        <input
+                            type="text"
+                            name="acresOfLand"
+                            value={profileData.acresOfLand}
+                            placeholder="Acres of Land"
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="text"
+                            name="crop"
+                            value={profileData.crop}
+                            placeholder="Crop they harvest"
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="text"
+                            name="rationCardOrAadhar"
+                            value={profileData.rationCardOrAadhar}
+                            placeholder="Ration Card/Aadhar Card"
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="number"
+                            name="revenueAmount"
+                            value={profileData.revenueAmount}
+                            placeholder="Revenue Amount of Crop Supplied"
+                            onChange={handleChange}
+                        />
+                    </>
+                )}
+
+                {profileData.occupation === 'Banker' && (
+                    <>
+                        <input
+                            type="text"
+                            name="bankAccountName"
+                            value={profileData.bankAccountName}
+                            placeholder="Bank Account Name"
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="number"
+                            name="bankId"
+                            value={profileData.bankId}
+                            placeholder="Bank ID"
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="text"
+                            name="branch"
+                            value={profileData.branch}
+                            placeholder="Branch"
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="text"
+                            name="offers"
+                            value={profileData.offers}
+                            placeholder="Offers to Walmart"
+                            onChange={handleChange}
+                        />
+                    </>
+                )}
+
+                {profileData.occupation === 'Artisan' && (
+                    <>
+                        <input
+                            type="text"
+                            name="artisanDetails"
+                            value={profileData.artisanDetails}
+                            placeholder="Artisan Details"
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="text"
+                            name="productDescription"
+                            value={profileData.productDescription}
+                            placeholder="Product Description"
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="text"
+                            name="companyName"
+                            value={profileData.companyName}
+                            placeholder="Company Name (if any)"
+                            onChange={handleChange}
+                        />
+                    </>
+                )}
+                {profileData.occupation === 'Others' && (
+                    <>
+                        <input
+                            type="text"
+                            name="othersDescription"
+                            value={profileData.othersDescription}
+                            placeholder="Description of Your Offerings"
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="text"
+                            name="companyName"
+                            value={profileData.companyName}
+                            placeholder="Company Name (if any)"
+                            onChange={handleChange}
+                        />
+                    </>
+                )}
+
                 <input
                     type="text"
                     name="address"
                     value={profileData.address}
-                    onChange={handleChange}
                     placeholder="Address"
+                    onChange={handleChange}
                     required
                 />
                 <select
@@ -79,81 +213,35 @@ const ProfileForm = () => {
                     required
                 >
                     <option value="">Select State</option>
-                    <option value="Andhra Pradesh">Andhra Pradesh</option>
-                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                    <option value="Assam">Assam</option>
-                    <option value="Bihar">Bihar</option>
-                    <option value="Chhattisgarh">Chhattisgarh</option>
-                    <option value="Goa">Goa</option>
-                    <option value="Gujarat">Gujarat</option>
-                    <option value="Haryana">Haryana</option>
-                    <option value="Himachal Pradesh">Himachal Pradesh</option>
-                    <option value="Jharkhand">Jharkhand</option>
-                    <option value="Karnataka">Karnataka</option>
-                    <option value="Kerala">Kerala</option>
-                    <option value="Madhya Pradesh">Madhya Pradesh</option>
-                    <option value="Maharashtra">Maharashtra</option>
-                    <option value="Manipur">Manipur</option>
-                    <option value="Meghalaya">Meghalaya</option>
-                    <option value="Mizoram">Mizoram</option>
-                    <option value="Nagaland">Nagaland</option>
-                    <option value="Odisha">Odisha</option>
-                    <option value="Punjab">Punjab</option>
-                    <option value="Rajasthan">Rajasthan</option>
-                    <option value="Sikkim">Sikkim</option>
-                    <option value="Tamil Nadu">Tamil Nadu</option>
-                    <option value="Telangana">Telangana</option>
-                    <option value="Tripura">Tripura</option>
-                    <option value="Uttar Pradesh">Uttar Pradesh</option>
-                    <option value="Uttarakhand">Uttarakhand</option>
-                    <option value="West Bengal">West Bengal</option>
+                    {statesAndUTs.map(state => (
+                        <option key={state} value={state}>{state}</option>
+                    ))}
                 </select>
                 <input
                     type="text"
                     name="city"
                     value={profileData.city}
-                    onChange={handleChange}
                     placeholder="City"
+                    onChange={handleChange}
                     required
                 />
                 <input
                     type="number"
                     name="pincode"
                     value={profileData.pincode}
-                    onChange={handleChange}
                     placeholder="Pincode"
+                    onChange={handleChange}
                     required
                 />
-                <select
-                    name="store"
-                    value={profileData.store}
-                    onChange={handleChange}
-                    required
-                >
-                    <option value="">Select Store</option>
-                    <option value="Mumbai">Mumbai</option>
-                    <option value="Bangalore">Bangalore</option>
-                    <option value="Hyderabad">Hyderabad</option>
-                    <option value="Delhi">Delhi</option>
-                    <option value="Kolkata">Kolkata</option>
-                    <option value="Chennai">Chennai</option>
-                    {/* Add other Walmart India stores here */}
-                </select>
                 <input
                     type="text"
-                    name="occupation"
-                    value={profileData.occupation}
-                    onChange={handleChange}
-                    placeholder="Occupation"
-                    required
-                />
-                <textarea
                     name="purpose"
                     value={profileData.purpose}
+                    placeholder="Purpose"
                     onChange={handleChange}
-                    placeholder="What do you want to supply to Walmart?"
                     required
-                ></textarea>
+                />
+
                 <button type="submit">Submit</button>
             </form>
         </div>

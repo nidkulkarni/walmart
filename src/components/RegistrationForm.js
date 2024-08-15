@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const RegistrationForm = () => {
   const [mobile, setMobile] = useState('');
   const [name, setName] = useState('');
+  const [occupation, setOccupation] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state && location.state.occupation) {
+      setOccupation(location.state.occupation);
+    }
+  }, [location]);
 
   const handleRegister = () => {
     // Validate name (only alphabets)
@@ -35,6 +43,8 @@ const RegistrationForm = () => {
     localStorage.setItem('otp', otp); // Store OTP
     localStorage.setItem('name', name);
     localStorage.setItem('mobile', mobile);
+    localStorage.setItem('occupation', occupation);
+
     alert(`OTP sent: ${otp}`); // For demo purposes only
     navigate('/otp-verification');
   };
@@ -55,7 +65,17 @@ const RegistrationForm = () => {
         value={mobile}
         onChange={(e) => setMobile(e.target.value)}
       />
-      <button onClick={handleRegister}>Send OTP</button>
+      <select
+        value={occupation}
+        onChange={(e) => setOccupation(e.target.value)}
+      >
+        <option value="">Select Occupation</option>
+        <option value="Farmer">Farmer</option>
+        <option value="Banker">Banker</option>
+        <option value="Artisan">Artisan</option>
+        <option value="Others">Others</option>
+      </select>
+      <button onClick={handleRegister}>Register</button>
     </div>
   );
 };
